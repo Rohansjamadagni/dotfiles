@@ -38,6 +38,11 @@ vol() {
     echo -e "VOL: $vol"
 }
 
+print_date(){
+  cdate=`date +"%a %h %d [%H:%M]"`
+  echo -e "$cdate"
+}
+
 gpu_usage() {
     gpu_usage=`nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits | awk '/[0-9]/ {print $1}' `
     echo -e "GPU: $gpu_usage%"
@@ -55,7 +60,7 @@ SLEEP_SEC=3
 # So I would love to add more functions to this script but it makes the 
 # echo output too long to display correctly.
 while :; do
-  echo "$(health)  | +@fg=1; +@fn=1;+@fn=0; $(cpu) $(gpu_usage)+@fg=0; | +@fg=2; +@fn=1;+@fn=0; $(mem) $(gpu_mem_usage) +@fg=0;| +@fg=3; +@fn=1;+@fn=0; $(hdd) +@fg=0; | +@fg=4; +@fn=1;+@fn=0; $(vol) +@fg=0; |"
+  echo "$(health)  | +@fg=1; +@fn=1;+@fn=0; $(cpu) $(gpu_usage)+@fg=0; | +@fg=2; +@fn=1;+@fn=0; $(mem) $(gpu_mem_usage) +@fg=0;| +@fg=3; +@fn=1;+@fn=0; $(hdd) +@fg=0; | +@fg=4; +@fn=1;+@fn=0; $(vol) +@fg=0; | $(print_date) "
 	sleep $SLEEP_SEC
 done
 
