@@ -20,9 +20,9 @@ keys = [
              lazy.spawn(myTerm),
              desc='Launches My Terminal'
              ),
-         Key([mod],'p',
-             lazy.spawn("/home/rohanj/.config/rofi/bin/launcher_colorful"),
-             desc='Run Launcher'
+         Key([mod],'e',
+             lazy.spawn("nautilus"),
+             desc='Open File manager'
              ),
          Key([mod],'x',
              lazy.spawn("/home/rohanj/.config/rofi/bin/menu_powermenu"),
@@ -71,6 +71,15 @@ keys = [
          Key([mod], "comma",
              lazy.prev_screen(),
              desc='Move focus to prev monitor'
+             ),
+    # Move between workspaces
+          Key([mod, "mod1"], "d",
+              lazy.screen.next_group(),
+             desc='Move to right workspace'
+             ),
+         Key([mod, "mod1" ], "a",
+             lazy.screen.prev_group(),
+             desc='Move to left workspace'
              ),
          ### Treetab controls
           Key([mod, "shift"], "h",
@@ -140,41 +149,32 @@ keys = [
              lazy.layout.toggle_split(),
              desc='Toggle between split and unsplit sides of stack'
              ),
-         # Emacs programs launched using the key chord CTRL+e followed by 'key'
-         # KeyChord(["control"],"e", [
-         #     Key([], "e",
-         #         lazy.spawn("emacsclient -c -a 'emacs'"),
-         #         desc='Launch Emacs'
-         #         ),
-         #     Key([], "b",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(ibuffer)'"),
-         #         desc='Launch ibuffer inside Emacs'
-         #         ),
-         #     Key([], "d",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'"),
-         #         desc='Launch dired inside Emacs'
-         #         ),
-         #     Key([], "i",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(erc)'"),
-         #         desc='Launch erc inside Emacs'
-         #         ),
-         #     Key([], "m",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(mu4e)'"),
-         #         desc='Launch mu4e inside Emacs'
-         #         ),
-         #     Key([], "n",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(elfeed)'"),
-         #         desc='Launch elfeed inside Emacs'
-         #         ),
-         #     Key([], "s",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(eshell)'"),
-         #         desc='Launch the eshell inside Emacs'
-         #         ),
-         #     Key([], "v",
-         #         lazy.spawn("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'"),
-         #         desc='Launch vterm inside Emacs'
-         #         )
-         # ]),
+         Key([mod], "F2",
+             lazy.spawn('/home/rohanj/.config/scripts/audio_change.sh'),
+             desc='Change audio source'
+             ),
+         Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
+         Key([], "XF86AudioLowerVolume", lazy.spawn("pactl -- set-sink-volume 0 -10%")),
+         Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl -- set-sink-volume 0 +10%")),
+         #Emacs programs launched using the key chord CTRL+e followed by 'key'
+         KeyChord(["control"],"e", [
+             Key([], "e",
+                 lazy.spawn("emacsclient -c -a 'emacs'"),
+                 desc='Launch Emacs'
+                 ),
+             Key([], "b",
+                 lazy.spawn("emacsclient -c -a 'emacs' --eval '(ibuffer)'"),
+                 desc='Launch ibuffer inside Emacs'
+                 ),
+             Key([], "d",
+                 lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'"),
+                 desc='Launch dired inside Emacs'
+                 ),
+             Key([], "v",
+                 lazy.spawn("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'"),
+                 desc='Launch vterm inside Emacs'
+                 )
+         ]),
          # Dmenu scripts launched using the key chord SUPER+p followed by 'key'
          # KeyChord([mod], "p", [
          #     Key([], "e",
@@ -595,7 +595,9 @@ follow_mouse_focus = True
 bring_front_click = True
 cursor_warp = True
 
-floating_layout = layout.Floating(float_rules=[
+floating_layout = layout.Floating(
+    border_width = 0,
+    float_rules=[
     # Run the utility of `xprop` to see the wm class and name of an X client.
     # default_float_rules include: utility, notification, toolbar, splash, dialog,
     # file_progress, confirm, download and error.
