@@ -4,8 +4,7 @@ import re
 import socket
 import subprocess
 from libqtile import qtile
-from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen
-from libqtile.command import lazy
+from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile import layout, bar, widget, hook
 from libqtile.lazy import lazy
 from typing import List  # noqa: F401
@@ -28,7 +27,7 @@ keys = [
              lazy.spawn("/home/rohanj/.config/rofi/bin/menu_powermenu"),
              desc='Logout Launcher'
              ),
-
+        Key([], 'F10', lazy.group['scratchpad'].dropdown_toggle('Terminal')),
          Key([mod], "w",
              lazy.spawn(myBrowser),
              desc='firefox'
@@ -72,12 +71,28 @@ keys = [
              lazy.prev_screen(),
              desc='Move focus to prev monitor'
              ),
+         Key([mod], "KP_Home",
+             lazy.group['seven'].toscreen(1),
+             desc='Open video(seven) on right monitor'
+             ),
+         Key([mod], "KP_Up",
+             lazy.group['eight'].toscreen(1),
+             desc='Open discord(eight) on right monitor'
+             ),
+         Key([mod], "KP_Page_Up",
+             lazy.group['nine'].toscreen(1),
+             desc='Open chat(nine) on right monitor'
+             ),
+         Key([mod], "comma",
+             lazy.prev_screen(),
+             desc='Move focus to prev monitor'
+             ),
     # Move between workspaces
-          Key([mod, "mod1"], "d",
+          Key([mod, "shift"], "d",
               lazy.screen.next_group(),
              desc='Move to right workspace'
              ),
-         Key([mod, "mod1" ], "a",
+         Key([mod, "shift" ], "a",
              lazy.screen.prev_group(),
              desc='Move to left workspace'
              ),
@@ -154,23 +169,24 @@ keys = [
              desc='Change audio source'
              ),
          Key([], "XF86AudioMute", lazy.spawn("amixer -q set Master toggle")),
-         Key([], "XF86AudioLowerVolume", lazy.spawn("pactl -- set-sink-volume 0 -10%")),
-         Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl -- set-sink-volume 0 +10%")),
+         Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -10%")),
+         Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +10%")),
+         Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
          #Emacs programs launched using the key chord CTRL+e followed by 'key'
          KeyChord(["control"],"e", [
-             Key([], "e",
+             Key(["control"], "e",
                  lazy.spawn("emacsclient -c -a 'emacs'"),
                  desc='Launch Emacs'
                  ),
-             Key([], "b",
+             Key(["control"], "b",
                  lazy.spawn("emacsclient -c -a 'emacs' --eval '(ibuffer)'"),
                  desc='Launch ibuffer inside Emacs'
                  ),
-             Key([], "d",
+             Key(["control"], "d",
                  lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'"),
                  desc='Launch dired inside Emacs'
                  ),
-             Key([], "v",
+             Key(["control"], "v",
                  lazy.spawn("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'"),
                  desc='Launch vterm inside Emacs'
                  )
@@ -216,18 +232,21 @@ keys = [
          # ])
 ]
 
-group_names = [("www", {'layout': 'monadtall'}),
-               ("dev", {'layout': 'monadtall'}),
-               ("dev2", {'layout': 'monadtall'}),
-               ("work", {'layout': 'monadtall'}),
-               ("work2", {'layout': 'monadtall', 'spawn': ['slack','mailspring']}),
-               ("crypt", {'layout': 'monadtall', 'spawn': ['brave']}),
-               ("vid", {'layout': 'monadtall', 'spawn': ['chromium https://www.youtube.com/']}),
-               ("disc", {'layout': 'monadtall', 'spawn': ['discord']}),
-               ("chat", {'layout': 'monadtall', 'spawn': ['whatsapp-nativefier','signal-desktop']}),
-               ("vnc", {'layout': 'monadtall'})]
+group_names = [("one", {'layout': 'monadtall'}),
+               ("two", {'layout': 'monadtall'}),
+               ("three", {'layout': 'monadtall'}),
+               ("four", {'layout': 'monadtall'}),
+               ("five", {'layout': 'monadtall', 'spawn': ['slack','mailspring']}),
+               ("six", {'layout': 'monadtall', 'spawn': ['brave']}),
+               ("seven", {'layout': 'monadtall', 'spawn': ['chromium https://www.youtube.com/']}),
+               ("eight", {'layout': 'monadtall', 'spawn': ['discord']}),
+               ("nine", {'layout': 'monadtall', 'spawn': ['whatsapp-nativefier','signal-desktop']}),
+               ("ten", {'layout': 'monadtall'})]
 
 groups = [Group(name, **kwargs) for name, kwargs in group_names]
+groups.append(ScratchPad('scratchpad', [
+    DropDown("Terminal","alacritty",opacity=0.9, on_focus_lost_hide=False)
+]))
 print(groups)
 
 for i, (name, kwargs) in enumerate(group_names, 1):
@@ -245,18 +264,18 @@ layout_theme = {"border_width": 1,
                 }
 
 layouts = [
+    layout.MonadTall(**layout_theme),
     layout.MonadWide(**layout_theme),
     # layout.Bsp(**layout_theme),
     #layout.Stack(stacks=2, **layout_theme),
     layout.Columns(**layout_theme),
     #layout.RatioTile(**layout_theme),
-    layout.Tile(shift_windows=True, **layout_theme),
-    layout.VerticalTile(**layout_theme),
-    layout.Matrix(**layout_theme),
-    layout.Zoomy(**layout_theme),
-    layout.MonadTall(**layout_theme),
-    layout.Max(**layout_theme),
-    layout.Stack(num_stacks=2),
+    # layout.Tile(shift_windows=True, **layout_theme),
+    # layout.VerticalTile(**layout_theme),
+    # layout.Matrix(**layout_theme),
+    # layout.Zoomy(**layout_theme),
+    # layout.Max(**layout_theme),
+    # layout.Stack(num_stacks=2),
     layout.RatioTile(**layout_theme),
     layout.TreeTab(
          font = "Ubuntu",
@@ -387,7 +406,7 @@ def init_widgets_list():
                        ),
              widget.GenPollText(
                        func=aave_health,
-                       update_interval=3,
+                       update_interval=30,
                        background= colors[0],
                        foreground= COLORS['red'],
                        mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('brave app.aave.com')},
@@ -402,6 +421,7 @@ def init_widgets_list():
               widget.CPU(
                        foreground = COLORS['blue'],
                        background = colors[0],
+                       format = 'CPU {load_percent}%',
                        padding = 5
                        ),
               # widget.ThermalSensor(
@@ -434,7 +454,7 @@ def init_widgets_list():
                        padding = 2,
                        foreground = COLORS['green'],
                        background = colors[0],
-                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e watch -n0.5 nvidia-smi')},
+                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e nvtop')},
                        FontsizE = 14
                        ),
             widget.GenPollText(
@@ -442,7 +462,7 @@ def init_widgets_list():
                        update_interval=2,
                        background= colors[0],
                        foreground= COLORS['green'],
-                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e watch -n0.5 nvidia-smi')},
+                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(myTerm + ' -e nvtop')},
                        fontsize = 14
                        ),
               widget.TextBox(
@@ -593,7 +613,7 @@ dgroups_app_rules = []  # type: List
 main = None
 follow_mouse_focus = True
 bring_front_click = True
-cursor_warp = True
+cursor_warp = False
 
 floating_layout = layout.Floating(
     border_width = 0,
