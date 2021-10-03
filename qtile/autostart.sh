@@ -5,3 +5,5 @@ feh --bg-fill Pictures/wall2.jpg
 picom -b
 ulauncher &
 nm-applet &
+conky -c ~/.config/conky/doomone-qtile.conkyrc &
+conky -c ~/.config/conky/doomone-qtile-right.conkyrc &

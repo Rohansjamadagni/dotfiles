@@ -240,7 +240,7 @@ group_names = [("one", {'layout': 'monadtall'}),
                ("six", {'layout': 'monadtall', 'spawn': ['brave']}),
                ("seven", {'layout': 'monadtall', 'spawn': ['chromium https://www.youtube.com/']}),
                ("eight", {'layout': 'monadtall', 'spawn': ['discord']}),
-               ("nine", {'layout': 'monadtall', 'spawn': ['whatsapp-nativefier','signal-desktop']}),
+               ("nine", {'layout': 'monadtall', 'spawn': ['chromium --app=https://web.whatsapp.com','signal-desktop']}),
                ("ten", {'layout': 'monadtall'})]
 
 groups = [Group(name, **kwargs) for name, kwargs in group_names]
