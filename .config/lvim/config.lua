@@ -22,6 +22,8 @@ lvim.keys.normal_mode[",p"] = ":pu<cr>"
 lvim.keys.normal_mode["<Leader>gs"] = ":G<cr>"
 lvim.keys.normal_mode["<Leader>gf"] = ":diffget //2<cr>"
 lvim.keys.normal_mode["<Leader>gj"] = ":diffget //3<cr>"
+lvim.keys.normal_mode["<Leader>gy"] = ":Git pull<cr>"
+lvim.keys.normal_mode["<Leader>gt"] = ":Git push<cr>"
 lvim.keys.insert_mode["<C-v>"] = "<esc>pa"
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
