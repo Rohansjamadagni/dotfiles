@@ -1,9 +1,8 @@
 --[[
 lvim is the global options object
 
-Linters should be
-filled in as strings with either
-a global executable or a path to
+Linters should befilled in as strings with either
+globala global executable or a path to
 an executable
 ]]
 -- THESE ARE EXAMPLE CONFIGS FEEL FREE TO CHANGE TO WHATEVER YOU WANT
@@ -25,6 +24,8 @@ lvim.keys.normal_mode["<Leader>gj"] = ":diffget //3<cr>"
 lvim.keys.normal_mode["<Leader>gy"] = ":Git pull<cr>"
 lvim.keys.normal_mode["<Leader>gt"] = ":Git push<cr>"
 lvim.keys.insert_mode["<C-v>"] = "<esc>pa"
+lvim.keys.normal_mode["<C-->"] = ":ZoomOut<cr>"
+lvim.keys.normal_mode["<C-=>"] = ":ZoomIn<cr>"
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -68,20 +69,19 @@ lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
-lvim.builtin.gitsigns.active = false
+lvim.builtin.gitsigns.active = false 
+lvim.builtin.terminal.open_mapping = "<Leader>tt"
+lvim.builtin.terminal.insert_mappings = false
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
   "bash",
+  "go",
   "c",
-  "javascript",
   "json",
   "lua",
   "python",
-  "typescript",
   "css",
-  "rust",
-  "java",
   "yaml",
 }
 
@@ -130,15 +130,14 @@ lvim.builtin.treesitter.highlight.enabled = true
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { exe = "black", filetypes = { "python" }, args = {"--line-length", "79"} },
-  { exe = "isort", filetypes = { "python" } },
-  {
-    exe = "prettier",
-    ---@usage arguments to pass to the formatter
-    -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
-    args = { "--print-with", "100" },
-    ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "typescript", "typescriptreact" },
-  },
+  -- {
+  --   exe = "prettier",
+  --   ---@usage arguments to pass to the formatter
+  --   -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+  --   args = { "--print-with", "79" },
+  --   ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+  --   filetypes = { "typescript", "typescriptreact" },
+  -- },
 }
 
 -- -- set additional linters
@@ -170,8 +169,12 @@ lvim.plugins = {
     {"tpope/vim-surround"},
     {"tpope/vim-sensible"},
   {"tpope/vim-fugitive"},
+  {"dstein64/vim-startuptime"},
   {"ThePrimeagen/harpoon"},
-  {"ThePrimeagen/vim-be-good"}
+    {"ThePrimeagen/vim-be-good"},
+  {"navarasu/onedark.nvim"},
+  {"drzel/vim-gui-zoom"},
+  {"tzachar/cmp-tabnine", run='./install.sh'}
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
