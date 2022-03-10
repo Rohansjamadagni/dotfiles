@@ -156,6 +156,10 @@ linters.setup {
     filetypes = { "javascript", "python" },
   },
 }
+-- LSP
+require('lspconfig').jedi_language_server.setup{
+  cmd = {'/home/rohanj/env/lsp-env/bin/jedi-language-server'}
+}
 
 -- Additional Plugins
 lvim.plugins = {
@@ -174,6 +178,7 @@ lvim.plugins = {
     {"ThePrimeagen/vim-be-good"},
   {"navarasu/onedark.nvim"},
   {"drzel/vim-gui-zoom"},
+  {"mg979/vim-visual-multi"},
   {"tzachar/cmp-tabnine", run='./install.sh'}
 }
 
