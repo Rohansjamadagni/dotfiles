@@ -36,7 +36,7 @@ keys = [
     #     desc='firefox'
     #     ),
     Key(
-        [mod], "n", lazy.spawn("/home/rohanj/.config/deadd/toggle.sh"), desc="open noti"
+        [mod], "n", lazy.spawn("/home/rohanj/.local/bin/gvim"), desc="open neovide"
     ),
     Key([mod], "equal", lazy.spawn("galculator"), desc="calculator"),
     Key([mod], "p", lazy.spawn("dmenu_run -h 30"), desc="Prompt"),
