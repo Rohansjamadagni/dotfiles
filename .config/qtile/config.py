@@ -6,8 +6,17 @@ import subprocess
 from typing import List  # noqa: F401
 
 from libqtile import bar, hook, layout, qtile, widget
-from libqtile.config import (Click, Drag, DropDown, Group, Key, KeyChord,
-                             Match, ScratchPad, Screen)
+from libqtile.config import (
+    Click,
+    Drag,
+    DropDown,
+    Group,
+    Key,
+    KeyChord,
+    Match,
+    ScratchPad,
+    Screen,
+)
 from libqtile.lazy import lazy
 
 mod = "mod4"  # Sets mod key to SUPER/WINDOWS
@@ -36,21 +45,33 @@ keys = [
     #     desc='firefox'
     #     ),
     Key(
-        [mod], "n", lazy.spawn("/home/rohanj/.local/bin/gvim"), desc="open neovide"
+        [mod],
+        "n",
+        lazy.spawn("/home/rohanj/.local/bin/gvim"),
+        desc="open neovide",
     ),
     Key([mod], "equal", lazy.spawn("galculator"), desc="calculator"),
     Key([mod], "p", lazy.spawn("dmenu_run -h 30"), desc="Prompt"),
     Key([mod], "space", lazy.next_layout(), desc="Toggle through layouts"),
-    Key([mod, "mod1"], "space", lazy.prev_layout(), desc="Toggle through layouts"),
+    Key(
+        [mod, "mod1"],
+        "space",
+        lazy.prev_layout(),
+        desc="Toggle through layouts",
+    ),
     Key([mod], "q", lazy.window.kill(), desc="Kill active window"),
     Key([mod, "shift"], "r", lazy.restart(), desc="Restart Qtile"),
-    Key([mod, "shift"], "s", lazy.spawn("flameshot gui"), desc="Restart Qtile"),
+    Key(
+        [mod, "shift"], "s", lazy.spawn("flameshot gui"), desc="Restart Qtile"
+    ),
     Key([mod, "shift"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     # Switch focus to specific monitor (out of three)
     Key([mod], "a", lazy.to_screen(0), desc="Keyboard focus to monitor 1"),
     Key([mod], "d", lazy.to_screen(1), desc="Keyboard focus to monitor 2"),
     # Switch focus of monitors
-    Key([mod], "period", lazy.next_screen(), desc="Move focus to next monitor"),
+    Key(
+        [mod], "period", lazy.next_screen(), desc="Move focus to next monitor"
+    ),
     Key([mod], "comma", lazy.prev_screen(), desc="Move focus to prev monitor"),
     Key(
         [mod],
@@ -114,8 +135,18 @@ keys = [
     ),
     Key([mod], "comma", lazy.prev_screen(), desc="Move focus to prev monitor"),
     # Move between workspaces
-    Key([mod, "shift"], "d", lazy.screen.next_group(), desc="Move to right workspace"),
-    Key([mod, "shift"], "a", lazy.screen.prev_group(), desc="Move to left workspace"),
+    Key(
+        [mod, "shift"],
+        "d",
+        lazy.screen.next_group(),
+        desc="Move to right workspace",
+    ),
+    Key(
+        [mod, "shift"],
+        "a",
+        lazy.screen.prev_group(),
+        desc="Move to left workspace",
+    ),
     # Treetab controls
     Key(
         [mod, "shift"],
@@ -130,8 +161,18 @@ keys = [
         desc="Move down a section in treetab",
     ),
     # Window controls
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down in current stack pane"),
-    Key([mod], "k", lazy.layout.up(), desc="Move focus up in current stack pane"),
+    Key(
+        [mod],
+        "j",
+        lazy.layout.down(),
+        desc="Move focus down in current stack pane",
+    ),
+    Key(
+        [mod],
+        "k",
+        lazy.layout.up(),
+        desc="Move focus up in current stack pane",
+    ),
     Key(
         [mod, "shift"],
         "j",
@@ -166,7 +207,12 @@ keys = [
         lazy.layout.grow(),
         desc="toggle window between minimum and maximum sizes",
     ),
-    Key([mod, "shift"], "t", lazy.window.toggle_floating(), desc="toggle floating"),
+    Key(
+        [mod, "shift"],
+        "t",
+        lazy.window.toggle_floating(),
+        desc="toggle floating",
+    ),
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="toggle fullscreen"),
     ### Stack controls
     Key(
@@ -232,7 +278,9 @@ keys = [
             Key(
                 ["control", "shift"],
                 "v",
-                lazy.spawn("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'"),
+                lazy.spawn(
+                    "emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'"
+                ),
                 desc="Launch vterm inside Emacs",
             ),
         ],
@@ -294,7 +342,13 @@ group_names = [
     ("four", {"layout": "monadtall"}),
     ("five", {"layout": "monadtall"}),
     ("six", {"layout": "monadtall", "spawn": ["brave"]}),
-    ("seven", {"layout": "monadtall", "spawn": ["chromium https://www.youtube.com/"]}),
+    (
+        "seven",
+        {
+            "layout": "monadtall",
+            "spawn": ["chromium https://www.youtube.com/"],
+        },
+    ),
     ("eight", {"layout": "monadtall", "spawn": ["discord"]}),
     ("nine", {"layout": "monadtall", "spawn": ["ferdi", "signal-desktop"]}),
     ("ten", {"layout": "monadtall"}),
@@ -304,7 +358,11 @@ groups = [Group(name, **kwargs) for name, kwargs in group_names]
 groups.append(
     ScratchPad(
         "scratchpad",
-        [DropDown("Terminal", "alacritty", opacity=0.9, on_focus_lost_hide=False)],
+        [
+            DropDown(
+                "Terminal", "alacritty", opacity=0.9, on_focus_lost_hide=False
+            )
+        ],
     )
 )
 print(groups)
@@ -396,19 +454,27 @@ COLORS = {
 prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
 
 ##### DEFAULT WIDGET SETTINGS #####
-widget_defaults = dict(font="Ubuntu Mono", fontsize=14, padding=2, background=colors[2])
+widget_defaults = dict(
+    font="Ubuntu Mono", fontsize=14, padding=2, background=colors[2]
+)
 extension_defaults = widget_defaults.copy()
 
 
 def init_widgets_list():
     widgets_list = [
-        widget.Sep(linewidth=0, padding=6, foreground=colors[2], background=colors[0]),
+        widget.Sep(
+            linewidth=0, padding=6, foreground=colors[2], background=colors[0]
+        ),
         widget.Image(
             filename="~/.config/qtile/icons/python-white.png",
             scale="False",
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("dmenu_run -h 30")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn("dmenu_run -h 30")
+            },
         ),
-        widget.Sep(linewidth=0, padding=6, foreground=colors[2], background=colors[0]),
+        widget.Sep(
+            linewidth=0, padding=6, foreground=colors[2], background=colors[0]
+        ),
         widget.GroupBox(
             font="Ubuntu Mono",
             fontsize=13,
@@ -436,18 +502,26 @@ def init_widgets_list():
             foreground=colors[3],
             background=colors[1],
         ),
-        widget.Sep(linewidth=0, padding=40, foreground=colors[2], background=colors[0]),
-        widget.WindowName(foreground=colors[6], background=colors[0], padding=0),
+        widget.Sep(
+            linewidth=0, padding=40, foreground=colors[2], background=colors[0]
+        ),
+        widget.WindowName(
+            foreground=colors[6], background=colors[0], padding=0
+        ),
         # widget.Systray(
         #          background = colors[0],
         #          padding = 5
         #          ),
-        widget.Sep(linewidth=0, padding=6, foreground=colors[0], background=colors[0]),
+        widget.Sep(
+            linewidth=0, padding=6, foreground=colors[0], background=colors[0]
+        ),
         widget.TextBox(
             text="AAVE:",
             foreground=COLORS["red"],
             background=colors[0],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("brave app.aave.com")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn("brave app.aave.com")
+            },
             padding=5,
         ),
         widget.GenPollText(
@@ -455,7 +529,9 @@ def init_widgets_list():
             update_interval=30,
             background=colors[0],
             foreground=COLORS["red"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("brave app.aave.com")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn("brave app.aave.com")
+            },
             fontsize=12,
         ),
         widget.TextBox(
@@ -484,11 +560,16 @@ def init_widgets_list():
             foreground=COLORS["blue"],
             background=colors[0],
             format="{MemUsed:.0f}{mm}",
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e htop")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn(myTerm + " -e htop")
+            },
             padding=0,
         ),
         widget.TextBox(
-            text=" T:", foreground=COLORS["blue"], background=colors[0], padding=2
+            text=" T:",
+            foreground=COLORS["blue"],
+            background=colors[0],
+            padding=2,
         ),
         widget.ThermalSensor(
             foreground=COLORS["blue"],
@@ -496,14 +577,19 @@ def init_widgets_list():
             tag_sensor="Tctl",
         ),
         widget.TextBox(
-            text="|", foreground=COLORS["blue"], background=colors[0], padding=5
+            text="|",
+            foreground=COLORS["blue"],
+            background=colors[0],
+            padding=5,
         ),
         widget.TextBox(
             text="GPU:",
             padding=2,
             foreground=COLORS["green"],
             background=colors[0],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e nvtop")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn(myTerm + " -e nvtop")
+            },
             Fontsize=14,
         ),
         widget.GenPollText(
@@ -511,7 +597,9 @@ def init_widgets_list():
             update_interval=2,
             background=colors[0],
             foreground=COLORS["green"],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn(myTerm + " -e nvtop")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn(myTerm + " -e nvtop")
+            },
             padding=0,
             fontsize=14,
         ),
@@ -548,29 +636,44 @@ def init_widgets_list():
             fontsize=14,
         ),
         widget.TextBox(
-            text="|", foreground=COLORS["green"], background=colors[0], padding=5
+            text="|",
+            foreground=COLORS["green"],
+            background=colors[0],
+            padding=5,
         ),
         widget.TextBox(
             text=" VOL:",
             foreground=COLORS["yellow"],
             background=colors[0],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("pavucontrol")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn("pavucontrol")
+            },
             padding=0,
         ),
-        widget.Volume(foreground=COLORS["yellow"], background=colors[0], padding=5),
+        widget.Volume(
+            foreground=COLORS["yellow"], background=colors[0], padding=5
+        ),
         widget.TextBox(
-            text="|", foreground=COLORS["yellow"], background=colors[0], padding=5
+            text="|",
+            foreground=COLORS["yellow"],
+            background=colors[0],
+            padding=5,
         ),
         widget.CurrentLayout(
             foreground=COLORS["magenta"], background=colors[0], padding=5
         ),
         widget.TextBox(
-            text="|", foreground=COLORS["magenta"], background=colors[0], padding=5
+            text="|",
+            foreground=COLORS["magenta"],
+            background=colors[0],
+            padding=5,
         ),
         widget.Clock(
             foreground=COLORS["cyan"],
             background=colors[0],
-            mouse_callbacks={"Button1": lambda: qtile.cmd_spawn("arcolinux-logout")},
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn("arcolinux-logout")
+            },
             format="%A, %B %d - %H:%M ",
         ),
     ]
@@ -626,14 +729,22 @@ def init_widgets_screen2():
     del widgets_screen2[
         7:11
     ]  # Slicing removes unwanted widgets (systray) on Monitors 1,3
-    return widgets_screen2  # Monitor 2 will display all widgets in widgets_list
+    return (
+        widgets_screen2  # Monitor 2 will display all widgets in widgets_list
+    )
 
 
 def init_screens():
     return [
-        Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)),
-        Screen(top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=30)),
-        Screen(top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)),
+        Screen(
+            top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)
+        ),
+        Screen(
+            top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=30)
+        ),
+        Screen(
+            top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)
+        ),
     ]
 
 
@@ -684,7 +795,10 @@ mouse = [
         start=lazy.window.get_position(),
     ),
     Drag(
-        [mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()
+        [mod],
+        "Button3",
+        lazy.window.set_size_floating(),
+        start=lazy.window.get_size(),
     ),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
