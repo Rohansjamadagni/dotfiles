@@ -123,6 +123,25 @@ print_center(){
     echo -ne "\E[6n";read -sdR y; y=$(echo -ne "${y#*[}" | cut -d';' -f1)
     echo -ne "\033[${y};${x}f$*"
 }
+# Fzf folder cder
+fzf-dir() {
+    local dir ret=$?
+    dir=$(fd . $HOME -a --type directory | fzf --height=40%)
+    if [ -z "$dir" ]; then
+        zle redisplay
+        return 0
+    fi 
+    cd $dir
+    local precmd
+    for precmd in $precmd_functions; do
+      $precmd
+    done
+    zle reset-prompt
+    return $ret
+}
+
+zle -N fzf-dir
+bindkey "^F" fzf-dir
 
 # main()
 
