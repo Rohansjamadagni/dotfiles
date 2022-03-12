@@ -26,6 +26,7 @@ lvim.keys.normal_mode["<Leader>gt"] = ":Git push<cr>"
 lvim.keys.insert_mode["<C-v>"] = "<esc>pa"
 lvim.keys.normal_mode["<C-->"] = ":ZoomOut<cr>"
 lvim.keys.normal_mode["<C-=>"] = ":ZoomIn<cr>"
+lvim.keys.normal_mode["<Leader>r"] = ":Telescope oldfiles<cr>"
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -185,5 +186,6 @@ lvim.plugins = {
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 lvim.autocommands.custom_groups = {
   { "BufWinEnter", "*", ":set number relativenumber" },
+  { "BufWinEnter", "*", ":set guifont=Source\\ Code\\ Pro:h13" },
   { "BufWinEnter", "*", ":AirlineTheme onedark" },
 }
