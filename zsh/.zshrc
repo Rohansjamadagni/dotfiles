@@ -54,6 +54,7 @@ export PATH="$HOME/.npm-global/bin:$PATH"  # ← put this line in .bashrc
 
 
 # Custom Variables
+# EDITOR=~/.local/bin/lvim
 EDITOR=nano
 export PF_INFO="ascii title os kernel wm editor shell uptime memory pallete pkgs"
 # History in cache directory:
@@ -142,7 +143,7 @@ fzf-dir() {
 
 zle -N fzf-dir
 bindkey "^F" fzf-dir
-
+bindkey -s "^[n" "lvim .^M"
 # main()
 
 # clear the screen, put the cursor at line 10, and set the text color
