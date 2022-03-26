@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import re
 import socket
 import subprocess
 from typing import List  # noqa: F401
@@ -77,61 +76,61 @@ keys = [
         [mod],
         "KP_End",
         lazy.group["one"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Down",
         lazy.group["two"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Page_Down",
         lazy.group["three"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Left",
         lazy.group["four"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Begin",
         lazy.group["five"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Right",
         lazy.group["six"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Home",
         lazy.group["seven"].toscreen(1),
-        desc="Open video(seven) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Up",
         lazy.group["eight"].toscreen(1),
-        desc="Open discord(eight) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Page_Up",
         lazy.group["nine"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key(
         [mod],
         "KP_Insert",
         lazy.group["ten"].toscreen(1),
-        desc="Open chat(nine) on right monitor",
+        desc="Open num workspace on second monitor",
     ),
     Key([mod], "comma", lazy.prev_screen(), desc="Move focus to prev monitor"),
     # Move between workspaces
@@ -806,7 +805,7 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 main = None
-follow_mouse_focus = True
+follow_mouse_focus = False
 bring_front_click = True
 cursor_warp = False
 
