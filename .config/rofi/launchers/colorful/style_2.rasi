@@ -14,8 +14,6 @@ configuration {
     display-drun: 					"";
     drun-display-format:            "{name}";
     disable-history:                false;
-    fullscreen:                     false;
-	hide-scrollbar: 				true;
 	sidebar-mode: 					false;
 }
 
@@ -27,8 +25,8 @@ window {
     text-color:                     @fg;
 	border:							0px;
 	border-color:					@ac;
-    border-radius:                  0px;
-	width:							20%;
+    border-radius:                  12px;
+	width:							18%;
     location:                       center;
     x-offset:                       0;
     y-offset:                       0;
@@ -39,7 +37,7 @@ prompt {
 	padding: 						0.30% 1% 0% -0.5%;
 	background-color: 				@al;
 	text-color: 					@bg;
-	font:							"FantasqueSansMono Nerd Font 14";
+	font:							"FantasqueSansMono Nerd Font 12";
 }
 
 entry {
@@ -69,7 +67,7 @@ listview {
     background-color:               @al;
     padding:                        0px;
     columns:                        1;
-    lines:                          6;
+    lines:                          5;
     spacing:                        0%;
     cycle:                          false;
     dynamic:                        true;
@@ -95,11 +93,17 @@ element {
 }
 
 element-icon {
+    background-color: 				inherit;
+    text-color:       				inherit;
+    horizontal-align:               0.5;
+    vertical-align:                 0.5;
     size:                           32px;
     border:                         0px;
 }
 
 element-text {
+    background-color: 				@al;
+    text-color:       				inherit;
     expand:                         true;
     horizontal-align:               0;
     vertical-align:                 0.5;

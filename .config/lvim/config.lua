@@ -66,7 +66,7 @@ lvim.builtin.which_key.mappings["t"] = {
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
-lvim.builtin.dashboard.active = true
+lvim.builtin.alpha.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
@@ -180,7 +180,7 @@ lvim.plugins = {
   {"navarasu/onedark.nvim"},
   {"drzel/vim-gui-zoom"},
   {"mg979/vim-visual-multi"},
-  {"tzachar/cmp-tabnine", run='./install.sh'}
+  -- {"tzachar/cmp-tabnine", run='./install.sh'}
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

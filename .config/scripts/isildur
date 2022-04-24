@@ -1,0 +1,3 @@
+ddcutil --bus 8 setvcp 60 0x0f &
+ddcutil --bus 6 setvcp 60 0x0f
+DISPLAY=:0 xdotool key Control_L+Alt_L+i

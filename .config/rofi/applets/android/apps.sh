@@ -27,8 +27,8 @@ options="$terminal\n$files\n$editor\n$browser\n$music\n$settings"
 chosen="$(echo -e "$options" | $rofi_command -p "Most Used" -dmenu -selected-row 0)"
 case $chosen in
     $terminal)
-		if [[ -f /usr/bin/alacritty ]]; then
-			alacritty &
+		if [[ -f /usr/bin/termite ]]; then
+			termite &
 		elif [[ -f /usr/bin/urxvt ]]; then
 			urxvt &
 		elif [[ -f /usr/bin/kitty ]]; then

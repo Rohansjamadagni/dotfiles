@@ -1,6 +1,7 @@
-
+export LC_ALL="en_US.UTF-8"
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/.npm-global/bin:$PATH"  # ← put this line in .bashrc
+export PATH="/home/rohanj/.cargo/bin:$PATH"  # ← put this line in .bashrc
 # Dependancies You Need for this Config
 # zsh-syntax-highlighting - syntax highlighting for ZSH in standard repos
 # autojump - jump to directories with j or jc for child or jo to open in file manager
@@ -64,6 +65,7 @@ HISTFILE=~/.cache/zshhistory
 setopt share_history
 # Basic auto/tab complete:
 autoload -U compinit
+autoload -U promptinit; promptinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
@@ -162,18 +164,19 @@ x11-clip-wrap-widgets paste  $paste_widgets
 
 #Conda stuff
 #colorscript -e 28
-figlet -f Speed SugoN | lolcat -b
+figlet -f Speed SugoN | lolcat 
 # figlet -f Speed Archbtw | lolcat -b
 # figlet   -f Speed -c  Archbtw | sed 's/^/            /' | lolcat -b
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+#prompt spaceship
+eval "$(starship init zsh)"
+
 # !! Contents within this block are managed by 'conda init' !!
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.zsh 2>/dev/null
 source /usr/share/autojump/autojump.zsh 2>/dev/null
-eval "$(starship init zsh)"
 export PATH=$HOME/.config/nvcode/utils/bin:$PATH
-source /home/rohanj/.config/broot/launcher/bash/br
 #	source /usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh

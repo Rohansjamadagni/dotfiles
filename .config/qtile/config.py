@@ -22,9 +22,129 @@ mod = "mod4"  # Sets mod key to SUPER/WINDOWS
 myTerm = "alacritty"  # My terminal of choice
 myBrowser = "firefox"  # My terminal of choice
 launch_tmux = "alacritty -e tmux"
+
+
+def aave_health():
+    aave = subprocess.Popen(
+        [
+            """ curl -s "https://api.debank.com/portfolio/list?project_id=matic_aave&user_addr=0x76d71b4b89605cf4875e67e10b02dd0495206aa7" | jq '.data.portfolio_list[0].detail.health_rate'| cut -c -5 """
+        ],
+        stdout=subprocess.PIPE,
+        shell=True,
+    )
+    (out, err) = aave.communicate()
+    return str(out.decode("utf-8").strip("\n"))
+
+
+def get_gpu_usage():
+    gpu = subprocess.Popen(
+        [
+            "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits | awk '/[0-9]/ {print $1}'"
+        ],
+        stdout=subprocess.PIPE,
+        shell=True,
+    )
+    (out, err) = gpu.communicate()
+    return str(out.decode("utf-8").strip("\n")) + "% "
+
+
+def get_gpu_mem_usage():
+    gpu = subprocess.Popen(
+        [
+            """ nvidia-smi --query-gpu=memory.used,memory.total --format=csv,nounits | awk '/[0-9]/ {printf "%dM",$1}' """
+        ],
+        stdout=subprocess.PIPE,
+        shell=True,
+    )
+    (out, err) = gpu.communicate()
+    return str(out.decode("utf-8").strip("\n"))
+
+
+def init_widgets_screen1():
+    widgets_screen1 = init_widgets_list()
+    del widgets_screen1[
+        -1
+    ]  # Slicing removes unwanted widgets (systray) on Monitors 1,3
+    return widgets_screen1
+
+
+def init_widgets_screen2():
+    widgets_screen2 = init_widgets_list()
+    del widgets_screen2[
+        7:11
+    ]  # Slicing removes unwanted widgets (systray) on Monitors 1,3
+    return (
+        widgets_screen2  # Monitor 2 will display all widgets in widgets_list
+    )
+
+
+def init_screens():
+    return [
+        Screen(
+            top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)
+        ),
+        Screen(
+            top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=30)
+        ),
+        Screen(
+            top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)
+        ),
+    ]
+
+
+def window_to_prev_group(qtile):
+    if qtile.currentWindow is not None:
+        i = qtile.groups.index(qtile.currentGroup)
+        qtile.currentWindow.togroup(qtile.groups[i - 1].name)
+
+
+def window_to_next_group(qtile):
+    if qtile.currentWindow is not None:
+        i = qtile.groups.index(qtile.currentGroup)
+        qtile.currentWindow.togroup(qtile.groups[i + 1].name)
+
+
+def window_to_previous_screen(qtile):
+    i = qtile.screens.index(qtile.current_screen)
+    if i != 0:
+        group = qtile.screens[i - 1].group.name
+        qtile.current_window.togroup(group)
+
+
+def window_to_next_screen(qtile):
+    i = qtile.screens.index(qtile.current_screen)
+    if i + 1 != len(qtile.screens):
+        group = qtile.screens[i + 1].group.name
+        qtile.current_window.togroup(group)
+
+
+def switch_screens(qtile):
+    i = qtile.screens.index(qtile.current_screen)
+    group = qtile.screens[i - 1].group
+    qtile.current_screen.set_group(group)
+
+
+def send_notfication(msg):
+    subprocess.Popen(
+        ["notify-send", msg],
+        stdout=subprocess.PIPE,
+        shell=True,
+    ).communicate()
+
+
+def get_audio_if():
+    symbol = subprocess.Popen(
+        ["/home/rohanj/.config/scripts/get_audio_symbol.sh"],
+        stdout=subprocess.PIPE,
+        shell=True,
+    )
+    (out, _) = symbol.communicate()
+    return str(out.decode("utf-8").strip("\n"))
+
+
 keys = [
     # The essentials
-    Key([mod], "Return", lazy.spawn(launch_tmux), desc="Launches My Terminal"),
+    Key([mod], "Return", lazy.spawn(myTerm), desc="Launches My Terminal"),
     Key([mod], "e", lazy.spawn("nautilus -w"), desc="Open File manager"),
     Key(
         [mod],
@@ -39,6 +159,15 @@ keys = [
         desc="Logout Launcher",
     ),
     Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("Terminal")),
+    Key([], "F12", lazy.group["scratchpad"].dropdown_toggle("bitwarden")),
+    Key(
+        ["control"],
+        "1",
+        lazy.group["scratchpad"].dropdown_toggle("file-manager"),
+    ),
+    Key(
+        ["control"], "2", lazy.group["scratchpad"].dropdown_toggle("Terminal")
+    ),
     # Key([mod], "w",
     #     lazy.spawn(myBrowser),
     #     desc='firefox'
@@ -49,11 +178,39 @@ keys = [
         lazy.spawn("/home/rohanj/.local/bin/gvim"),
         desc="open neovide",
     ),
-    Key([mod], "equal", lazy.spawn("galculator"), desc="calculator"),
-    Key([mod], "p", lazy.spawn("dmenu_run -h 30"), desc="Prompt"),
-    Key([mod], "space", lazy.next_layout(), desc="Toggle through layouts"),
     Key(
-        [mod, "mod1"],
+        [mod, "control"],
+        "m",
+        lazy.spawn("bash /home/rohanj/.local/bin/mac"),
+        desc="open neovide",
+    ),
+    Key([mod], "equal", lazy.spawn("galculator"), desc="calculator"),
+    Key(
+        [mod],
+        "p",
+        lazy.spawn(".config/rofi/bin/launcher_colorful"),
+        desc="Prompt",
+    ),
+    Key(
+        [mod, "shift"],
+        "e",
+        lazy.spawn(".config/rofi/bin/launcher_colorful_emoji"),
+        desc="Prompt",
+    ),
+    Key(
+        [mod, "control"],
+        "Tab",
+        lazy.spawn(".config/rofi/bin/launcher_colorful_win"),
+        desc="Prompt",
+    ),
+    Key(
+        [mod, "control"],
+        "space",
+        lazy.next_layout(),
+        desc="Toggle through layouts",
+    ),
+    Key(
+        [mod, "control", "shift"],
         "space",
         lazy.prev_layout(),
         desc="Toggle through layouts",
@@ -359,8 +516,35 @@ groups.append(
         "scratchpad",
         [
             DropDown(
-                "Terminal", "alacritty", opacity=0.9, on_focus_lost_hide=False
-            )
+                "Terminal",
+                "alacritty",
+                opacity=0.9,
+                on_focus_lost_hide=False,
+                width=0.4,
+                height=0.4,
+                x=0.3,
+                y=0.1,
+            ),
+            DropDown(
+                "bitwarden",
+                "bitwarden-desktop",
+                opacity=0.9,
+                on_focus_lost_hide=False,
+                width=0.4,
+                height=0.4,
+                x=0.3,
+                y=0.1,
+            ),
+            DropDown(
+                "file-manager",
+                "nautilus",
+                opacity=0.9,
+                on_focus_lost_hide=False,
+                width=0.4,
+                height=0.4,
+                x=0.3,
+                y=0.1,
+            ),
         ],
     )
 )
@@ -468,7 +652,11 @@ def init_widgets_list():
             filename="~/.config/qtile/icons/python-white.png",
             scale="False",
             mouse_callbacks={
-                "Button1": lambda: qtile.cmd_spawn("dmenu_run -h 30")
+                "Button1": lambda: qtile.cmd_spawn("ulauncher"),
+                "Button2": lambda: qtile.cmd_spawn(myTerm),
+                "Button3": lambda: qtile.cmd_spawn(
+                    ".config/rofi/bin/launcher_colorful_win"
+                ),
             },
         ),
         widget.Sep(
@@ -507,10 +695,6 @@ def init_widgets_list():
         widget.WindowName(
             foreground=colors[6], background=colors[0], padding=0
         ),
-        # widget.Systray(
-        #          background = colors[0],
-        #          padding = 5
-        #          ),
         widget.Sep(
             linewidth=0, padding=6, foreground=colors[0], background=colors[0]
         ),
@@ -652,6 +836,18 @@ def init_widgets_list():
         widget.Volume(
             foreground=COLORS["yellow"], background=colors[0], padding=5
         ),
+        widget.GenPollText(
+            func=get_audio_if,
+            update_interval=2,
+            background=colors[0],
+            foreground=COLORS["yellow"],
+            mouse_callbacks={
+                "Button1": lambda: qtile.cmd_spawn(
+                    "/home/rohanj/.config/scripts/audio_change.sh"
+                )
+            },
+            fontsize=12,
+        ),
         widget.TextBox(
             text="|",
             foreground=COLORS["yellow"],
@@ -675,115 +871,9 @@ def init_widgets_list():
             },
             format="%A, %B %d - %H:%M ",
         ),
+        widget.Systray(background=colors[0], padding=5),
     ]
     return widgets_list
-
-
-def aave_health():
-    aave = subprocess.Popen(
-        [
-            """ curl -s "https://api.debank.com/portfolio/list?project_id=matic_aave&user_addr=0x76d71b4b89605cf4875e67e10b02dd0495206aa7" | jq '.data.portfolio_list[0].detail.health_rate'| cut -c -5 """
-        ],
-        stdout=subprocess.PIPE,
-        shell=True,
-    )
-    (out, err) = aave.communicate()
-    return str(out.decode("utf-8").strip("\n"))
-
-
-def get_gpu_usage():
-    gpu = subprocess.Popen(
-        [
-            "nvidia-smi --query-gpu=utilization.gpu --format=csv,nounits | awk '/[0-9]/ {print $1}'"
-        ],
-        stdout=subprocess.PIPE,
-        shell=True,
-    )
-    (out, err) = gpu.communicate()
-    return str(out.decode("utf-8").strip("\n")) + "% "
-
-
-def get_gpu_mem_usage():
-    gpu = subprocess.Popen(
-        [
-            """ nvidia-smi --query-gpu=memory.used,memory.total --format=csv,nounits | awk '/[0-9]/ {printf "%dM",$1}' """
-        ],
-        stdout=subprocess.PIPE,
-        shell=True,
-    )
-    (out, err) = gpu.communicate()
-    return str(out.decode("utf-8").strip("\n"))
-
-
-def init_widgets_screen1():
-    widgets_screen1 = init_widgets_list()
-    del widgets_screen1[
-        7:8
-    ]  # Slicing removes unwanted widgets (systray) on Monitors 1,3
-    return widgets_screen1
-
-
-def init_widgets_screen2():
-    widgets_screen2 = init_widgets_list()
-    del widgets_screen2[
-        7:11
-    ]  # Slicing removes unwanted widgets (systray) on Monitors 1,3
-    return (
-        widgets_screen2  # Monitor 2 will display all widgets in widgets_list
-    )
-
-
-def init_screens():
-    return [
-        Screen(
-            top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)
-        ),
-        Screen(
-            top=bar.Bar(widgets=init_widgets_screen2(), opacity=1.0, size=30)
-        ),
-        Screen(
-            top=bar.Bar(widgets=init_widgets_screen1(), opacity=1.0, size=30)
-        ),
-    ]
-
-
-if __name__ in ["config", "__main__"]:
-    screens = init_screens()
-    widgets_list = init_widgets_list()
-    widgets_screen1 = init_widgets_screen1()
-    widgets_screen2 = init_widgets_screen2()
-
-
-def window_to_prev_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i - 1].name)
-
-
-def window_to_next_group(qtile):
-    if qtile.currentWindow is not None:
-        i = qtile.groups.index(qtile.currentGroup)
-        qtile.currentWindow.togroup(qtile.groups[i + 1].name)
-
-
-def window_to_previous_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    if i != 0:
-        group = qtile.screens[i - 1].group.name
-        qtile.current_window.togroup(group)
-
-
-def window_to_next_screen(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    if i + 1 != len(qtile.screens):
-        group = qtile.screens[i + 1].group.name
-        qtile.current_window.togroup(group)
-
-
-def switch_screens(qtile):
-    i = qtile.screens.index(qtile.current_screen)
-    group = qtile.screens[i - 1].group
-    qtile.current_screen.set_group(group)
 
 
 mouse = [
@@ -805,7 +895,7 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 main = None
-follow_mouse_focus = False
+follow_mouse_focus = True
 bring_front_click = True
 cursor_warp = False
 
@@ -831,6 +921,12 @@ floating_layout = layout.Floating(
 )
 auto_fullscreen = True
 focus_on_window_activation = "smart"
+
+if __name__ in ["config", "__main__"]:
+    screens = init_screens()
+    widgets_list = init_widgets_list()
+    widgets_screen1 = init_widgets_screen1()
+    widgets_screen2 = init_widgets_screen2()
 
 
 @hook.subscribe.startup_once
