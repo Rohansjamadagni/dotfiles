@@ -180,12 +180,14 @@ lvim.plugins = {
   {"navarasu/onedark.nvim"},
   {"drzel/vim-gui-zoom"},
   {"mg979/vim-visual-multi"},
+  {"lewis6991/impatient.nvim"},
   -- {"tzachar/cmp-tabnine", run='./install.sh'}
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 lvim.autocommands.custom_groups = {
   { "BufWinEnter", "*", ":set number relativenumber" },
-  { "BufWinEnter", "*", ":set guifont=Source\\ Code\\ Pro:h13" },
-  { "BufWinEnter", "*", ":AirlineTheme onedark" },
+  { "VimEnter", "*", ":set guifont=Source\\ Code\\ Pro:h13" },
+  { "VimEnter", "*", ":AirlineTheme onedark" },
+  { "VimEnter", "*", ":highlight Normal guibg=none" },
 }
