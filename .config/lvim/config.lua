@@ -68,9 +68,10 @@ lvim.builtin.which_key.mappings["t"] = {
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.terminal.active = true
+lvim.builtin.notify.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
-lvim.builtin.gitsigns.active = false 
+lvim.builtin.gitsigns.active = false
 lvim.builtin.terminal.open_mapping = "<Leader>tt"
 lvim.builtin.terminal.insert_mappings = false
 
@@ -130,7 +131,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
-  { exe = "black", filetypes = { "python" }, args = {"--line-length", "79"} },
+  { exe = "black", filetypes = { "python" }, args = { "--line-length", "79" } },
   -- {
   --   exe = "prettier",
   --   ---@usage arguments to pass to the formatter
@@ -158,30 +159,31 @@ linters.setup {
   },
 }
 -- LSP
-require('lspconfig').jedi_language_server.setup{
-  cmd = {'/home/rohanj/env/lsp-env/bin/jedi-language-server'}
+require('lspconfig').jedi_language_server.setup {
+  cmd = { '/home/rohanj/.local/bin/jedi-language-server' }
 }
 
 -- Additional Plugins
 lvim.plugins = {
-    {"folke/tokyonight.nvim"},
-    {
-      "folke/trouble.nvim",
-      cmd = "TroubleToggle",
-    },
-  {"vim-airline/vim-airline"},
-  {"vim-airline/vim-airline-themes"},
-    {"tpope/vim-surround"},
-    {"tpope/vim-sensible"},
-  {"tpope/vim-fugitive"},
-  {"dstein64/vim-startuptime"},
-  {"ThePrimeagen/harpoon"},
-    {"ThePrimeagen/vim-be-good"},
-  {"navarasu/onedark.nvim"},
-  {"drzel/vim-gui-zoom"},
-  {"mg979/vim-visual-multi"},
-  {"lewis6991/impatient.nvim"},
-  -- {"tzachar/cmp-tabnine", run='./install.sh'}
+  { "folke/tokyonight.nvim" },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
+  },
+  { "vim-airline/vim-airline" },
+  { "vim-airline/vim-airline-themes" },
+  { "tpope/vim-surround" },
+  { "tpope/vim-sensible" },
+  { "tpope/vim-fugitive" },
+  { "dstein64/vim-startuptime" },
+  { "ThePrimeagen/harpoon" },
+  { "ThePrimeagen/vim-be-good" },
+  { "navarasu/onedark.nvim" },
+  { "drzel/vim-gui-zoom" },
+  { "mg979/vim-visual-multi" },
+  { "lewis6991/impatient.nvim" },
+  { "unblevable/quick-scope" },
+  { "tzachar/cmp-tabnine", run = './install.sh' }
 }
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)

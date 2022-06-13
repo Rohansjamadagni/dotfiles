@@ -2,6 +2,7 @@ export LC_ALL="en_US.UTF-8"
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/.npm-global/bin:$PATH"  # ← put this line in .bashrc
 export PATH="/home/rohanj/.cargo/bin:$PATH"  # ← put this line in .bashrc
+export PATH="/home/rohanj/.scripts/:$PATH"  # ← put this line in .bashrc
 # Dependancies You Need for this Config
 # zsh-syntax-highlighting - syntax highlighting for ZSH in standard repos
 # autojump - jump to directories with j or jc for child or jo to open in file manager
@@ -143,9 +144,27 @@ fzf-dir() {
     return $ret
 }
 
+fzf-dir-lvim() {
+    local cmd ret=$?
+    cmd=$(fd . -a |  fzf --preview="cat {}" --bind ctrl-u:preview-page-up,ctrl-d:preview-page-down)
+    if [ -z "$cmd" ]; then
+        zle redisplay
+        return 0
+    fi 
+    lvim $cmd
+    local precmd
+    for precmd in $precmd_functions; do
+      $precmd
+    done
+    zle reset-prompt
+    return $ret
+}
 zle -N fzf-dir
+# zle -N fzf-dir-lvim
 bindkey "^F" fzf-dir
+bindkey "^G" fzf-dir-lvim
 bindkey -s "^[n" "lvim .^M"
+bindkey -s "^[e" "nautilus . &; disown %1; ^M"
 # main()
 
 # clear the screen, put the cursor at line 10, and set the text color
