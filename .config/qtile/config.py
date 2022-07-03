@@ -201,6 +201,18 @@ def layout_keys():
         # Window controls
         Key(
             [mod],
+            "h",
+            lazy.layout.left(),
+            desc="Move focus down in current stack pane",
+        ),
+        Key(
+            [mod],
+            "l",
+            lazy.layout.right(),
+            desc="Move focus down in current stack pane",
+        ),
+        Key(
+            [mod],
             "j",
             lazy.layout.down(),
             desc="Move focus down in current stack pane",
@@ -227,13 +239,13 @@ def layout_keys():
         ),
         Key(
             [mod],
-            "h",
+            "s",
             lazy.layout.shrink(),
             desc="Shrink window (MonadTall), decrease number in master pane (Tile)",
         ),
         Key(
             [mod],
-            "l",
+            "b",
             lazy.layout.grow(),
             desc="Expand window (MonadTall), increase number in master pane (Tile)",
         ),
@@ -323,7 +335,7 @@ def spawn_keys():
         Key(
             [mod],
             "n",
-            lazy.spawn("/home/rohanj/.local/bin/gvim"),
+            lazy.spawn("neovide"),
             desc="open neovide",
         ),
         Key(
@@ -392,9 +404,7 @@ def spawn_keys():
             "w",
             [
                 Key([mod], "w", lazy.spawn("firefox"), desc="Launch firefox"),
-                Key(
-                    [mod], "c", lazy.spawn("chromium"), desc="Launch chromium"
-                ),
+                Key([mod], "c", lazy.spawn("chromium"), desc="Launch chromium"),
                 Key([mod], "b", lazy.spawn("brave"), desc="Launch brave"),
             ],
         ),
@@ -419,14 +429,14 @@ group_names = [
     ("seven", {"layout": "monadtall", "spawn": ["chromium"]}),
     (
         "eight",
-        {"layout": "max", "spawn": ["discord", "spotify"]},
+        {"layout": "treetab", "spawn": ["discord", "spotify"]},
     ),
     (
         "nine",
         {
             "layout": "monadtall",
             "spawn": ["signal-desktop", "ferdi"],
-            "matches": [Match(wm_class=["ferdi"])],
+            "matches": [Match(wm_class=["ferdi", "signal-desktop"])],
         },
     ),
     (
@@ -476,9 +486,7 @@ def group_keys(group_names, keys, screen_number):
         )
     group_keys.extend(
         [
-            Key(
-                [], "F10", lazy.group["scratchpad"].dropdown_toggle("Terminal")
-            ),
+            Key([], "F10", lazy.group["scratchpad"].dropdown_toggle("Terminal")),
             Key(
                 [],
                 "F12",
@@ -581,23 +589,19 @@ layouts = [
         vspace=3,
         panel_width=200,
     ),
-    layout.Columns(
-        border_focus_stack=["#d75f5f", "#8f3d3d"], **layout_defaults
-    ),
+    layout.Columns(border_focus_stack=["#d75f5f", "#8f3d3d"], **layout_defaults),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    layout.MonadWide(),
+    layout.MonadWide(**layout_defaults),
     # layout.RatioTile(),
-    # layout.Tile(),
+    # layout.Tile(**layout_defaults),
     # layout.VerticalTile(),
     # layout.Zoomy(),
 ]
 
-widget_defaults = dict(
-    font="Ubuntu Mono", fontsize=14, padding=2, background=colors[2]
-)
+widget_defaults = dict(font="Ubuntu Mono", fontsize=14, padding=2, background=colors[2])
 extension_defaults = widget_defaults.copy()
 
 

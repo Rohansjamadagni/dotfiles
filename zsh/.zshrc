@@ -57,7 +57,7 @@ export PATH="/home/rohanj/.scripts/:$PATH"  # ← put this line in .bashrc
 
 # Custom Variables
 # EDITOR=~/.local/bin/lvim
-EDITOR=nano
+EDITOR=nvim
 export PF_INFO="ascii title os kernel wm editor shell uptime memory pallete pkgs"
 # History in cache directory:
 HISTSIZE=10000
@@ -87,6 +87,10 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[1;3D" backward-word
 bindkey "^[OA" history-search-backward
 bindkey "^[OB" history-search-forward
+bindkey -e
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^Xe' edit-command-line
 # Load aliases and shortcuts if existent.
 [ -f "$HOME/.zsh/aliasrc" ] && source "$HOME/.zsh/aliasrc"
 
@@ -151,7 +155,7 @@ fzf-dir-lvim() {
         zle redisplay
         return 0
     fi 
-    lvim $cmd
+    nvim $cmd
     local precmd
     for precmd in $precmd_functions; do
       $precmd
@@ -160,7 +164,6 @@ fzf-dir-lvim() {
     return $ret
 }
 zle -N fzf-dir
-# zle -N fzf-dir-lvim
 bindkey "^F" fzf-dir
 bindkey "^G" fzf-dir-lvim
 bindkey -s "^[n" "lvim .^M"
