@@ -67,6 +67,14 @@ COLORS = {
     "white": "#ffffff",
 }
 
+def get_tmux_ls():
+    number = subprocess.Popen(
+        ["tmux ls | wc -l"],
+        stdout=subprocess.PIPE,
+        shell=True,
+    )
+    (out, _) = number.communicate()
+    return str(out.decode("utf-8").strip("\n"))
 
 def get_audio_if():
     symbol = subprocess.Popen(
@@ -175,273 +183,25 @@ def window_name():
     ]
 
 
-# def app_block():
-#     """Open apps."""
-#     return [
-#         widget.Systray(background=colors["transparent"], padding=5),
-#     ]
-
-
-# def gpu_block():
-#     """GPU information."""
-#     return [
-#         widget.Sep(
-#             linewidth=0, padding=5, background=backgrounds["gpu_block"]
-#         ),
-#         widget.Image(
-#             filename=f"{os.environ['HOME']}/.config/qtile/icons/gpu.png",
-#             background=backgrounds["gpu_block"],
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(my_terminal + " -e nvtop")
-#             },
-#         ),
-#         widget.Sep(
-#             linewidth=0, padding=5, background=backgrounds["gpu_block"]
-#         ),
-#         widget.NvidiaSensors(
-#             foreground="#152238",
-#             background=backgrounds["gpu_block"],
-#             format="{temp} C",
-#             padding=10,
-#             fontsize=10,
-#         ),
-#         widget.GenPollText(
-#             fmt="{}",
-#             foreground="#152238",
-#             background=backgrounds["gpu_block"],
-#             func=get_gpu_usage,
-#             update_interval=2,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(my_terminal + " -e nvtop")
-#             },
-#             padding=10,
-#             fontsize=10,
-#         ),
-#         widget.GenPollText(
-#             fmt="{}",
-#             foreground="#152238",
-#             background=backgrounds["gpu_block"],
-#             func=get_gpu_mem_usage,
-#             update_interval=2,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(my_terminal + " -e nvtop")
-#             },
-#             padding=10,
-#             fontsize=10,
-#         ),
-#     ]
-
-
-# def cpu_block():
-#     """CPU information."""
-#     return [
-#         widget.TextBox(
-#             text="",
-#             foreground=colors["black"],
-#             background=backgrounds["cpu_block"],
-#             fontsize=15,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(f"{my_terminal} -e htop")
-#             },
-#         ),
-#         widget.CPU(
-#             foreground=colors["black"],
-#             background=backgrounds["cpu_block"],
-#             # background="#f5d0f0",
-#             format="{load_percent}%",
-#             padding=10,
-#             fontsize=10,
-#         ),
-#     ]
-
-
-# def memory_block():
-#     """RAM and Swap information."""
-#     return [
-#         widget.TextBox(
-#             text="﬙",
-#             foreground=colors["black"],
-#             background=backgrounds["memory_block"],
-#             fontsize=15,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(f"{my_terminal} -e htop")
-#             },
-#         ),
-#         widget.Memory(
-#             foreground=colors["black"],
-#             background=backgrounds["memory_block"],
-#             format="{MemUsed:.1f}{mm}/{MemTotal:.1f}{mm}",
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(f"{my_terminal} -e htop")
-#             },
-#             measure_mem="G",
-#             padding=10,
-#             fontsize=10,
-#         ),
-#         widget.Memory(
-#             foreground=colors["black"],
-#             background=backgrounds["memory_block"],
-#             format="{SwapUsed:.1f}{ms}/{SwapTotal:.1f}{ms}",
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(f"{my_terminal} -e htop")
-#             },
-#             measure_swap="G",
-#             padding=10,
-#             fontsize=10,
-#         ),
-#     ]
-
-
-# def volume_block():
-#     """Volume information."""
-#     return [
-#         widget.TextBox(
-#             text="墳",
-#             foreground=colors["black"],
-#             background=backgrounds["volume_block"],
-#             fontsize=15,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn("pavucontrol")
-#             },
-#         ),
-#         widget.Volume(
-#             fmt="{}",
-#             foreground=colors["black"],
-#             background=backgrounds["volume_block"],
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn("pavucontrol")
-#             },
-#             padding=5,
-#             fontsize=10,
-#         ),
-#     ]
-
-
-# def clock_block():
-#     """Clock information."""
-#     return [
-#         widget.TextBox(
-#             text="",
-#             foreground=colors["black"],
-#             background=backgrounds["clock_block"],
-#             fontsize=15,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn("gnome-calendar")
-#             },
-#         ),
-#         widget.Clock(
-#             format="%I:%M  %A  %B %d",
-#             foreground=colors["black"],
-#             background=backgrounds["clock_block"],
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn("gnome-calendar")
-#             },
-#             fontsize=11,
-#             padding=10,
-#         ),
-#     ]
-
-
-# def brightness_block():
-#     """Brightness information."""
-#     return [
-#         widget.TextBox(
-#             text="\u2600",
-#             foreground=colors["black"],
-#             background=backgrounds["brightness_block"],
-#             fontsize=15,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn("pavucontrol")
-#             },
-#         ),
-#         widget.Backlight(
-#             fmt="{}",
-#             backlight_name="intel_backlight",
-#             foreground=colors["black"],
-#             background=backgrounds["brightness_block"],
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn("pavucontrol")
-#             },
-#             padding=5,
-#             fontsize=10,
-#         ),
-#     ]
-
-
-# def current_layout():
-#     """Show current Qtile layout."""
-#     return [
-#         widget.CurrentLayoutIcon(
-#             scale=0.6,
-#             foreground=colors["black"],
-#             background=backgrounds["current_layout"],
-#             custom_icon_paths=[f"{os.environ['HOME']}/.config/qtile/icons/"],
-#             padding=5,
-#         ),
-#         widget.CurrentLayout(
-#             foreground=colors["black"],
-#             background=backgrounds["current_layout"],
-#             fontsize=10,
-#             padding=5,
-#         ),
-#     ]
-
-
-# def battery_block():
-#     """Display battery infromation."""
-#     return [
-#         widget.Battery(
-#             foreground=colors["black"],
-#             low_foreground=colors["black"],
-#             background=backgrounds["battery_block"],
-#             low_background=colors["red"],
-#             discharge_char="",
-#             charge_char="",
-#             full_char="",
-#             empty_char="",
-#             low_percentage=0.25,
-#             format="{char}   {percent:2.1%}",
-#             update_delay=5,
-#             padding=10,
-#         )
-#     ]
-
-
-# def quick_exit():
-#     """Shutdown button."""
-#     return [
-#         widget.QuickExit(
-#             default_text="&#x23FB;",  # utf8 for the power symbol
-#             fontsize=15,
-#             foreground="#152238",
-#             background=backgrounds["quick_exit"],
-#             padding=5,
-#             mouse_callbacks={
-#                 "Button1": lambda: qtile.cmd_spawn(
-#                     f"{os.environ['HOME']}/.config/rofi/scripts/"
-#                     + "menu_powermenu"
-#                 )
-#             },
-#         ),
-#     ]
-
-
 def get_bar_widgets(primary: bool, laptop: bool) -> bar.Bar:
     """Return an object of bar.Bar."""
     widgets = [
         widget.Sep(
             linewidth=0, padding=6, foreground=colors[2], background=colors[0]
         ),
-        widget.Image(
-            filename="~/.config/qtile/icons/python-white.png",
-            scale="False",
+        widget.GenPollText(
+            background=colors[0],
+            foreground=colors[6],
+            fontsize=13,
+            margin_y=4,
+            margin_x=0,
+            padding_y=6,
+            padding_x=3,
+            update_interval=2,
             mouse_callbacks={
-                "Button1": lambda: qtile.cmd_spawn("ulauncher"),
-                "Button2": lambda: qtile.cmd_spawn(myTerm),
-                "Button3": lambda: qtile.cmd_spawn(
-                    ".config/rofi/bin/launcher_colorful_win"
-                ),
+                "Button1": lambda: qtile.cmd_spawn(myTerm)
             },
+            func=get_tmux_ls
         ),
         widget.Sep(
             linewidth=0, padding=6, foreground=colors[2], background=colors[0]
@@ -476,8 +236,14 @@ def get_bar_widgets(primary: bool, laptop: bool) -> bar.Bar:
         widget.Sep(
             linewidth=0, padding=40, foreground=colors[2], background=colors[0]
         ),
-        widget.WindowName(
-            foreground=colors[6], background=colors[0], padding=0
+        widget.TaskList(
+            foreground=colors[6],
+            background=colors[0],
+            margin_y=4,
+            margin_x=0,
+            padding_y=6,
+            padding_x=3,
+            scroll=True
         ),
         widget.Sep(
             linewidth=0, padding=6, foreground=colors[0], background=colors[0]
@@ -655,7 +421,14 @@ def get_bar_widgets(primary: bool, laptop: bool) -> bar.Bar:
             },
             format="%A, %B %d - %H:%M ",
         ),
-        widget.Systray(background=colors[0], padding=5),
+        widget.WidgetBox(
+            foreground=COLORS["cyan"],
+            background=colors[0],
+            widgets=[
+
+            widget.Systray(background=colors[0], padding=5),
+            ]
+        )
     ]
 
     # Add the GPU block if it exists on the machine

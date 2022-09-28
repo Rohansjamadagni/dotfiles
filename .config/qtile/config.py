@@ -1,21 +1,11 @@
 """My configuration for the Qtile Tiling Window Manager."""
-#
 # -----------
-#
 # ________      ______               _________
 # ___  __ \________  /_______ _____________  /
 # __  /_/ /  __ \_  __ \  __ `/_  __ \__ _  /
 # _  _, _// /_/ /  / / / /_/ /_  / / / /_/ /
 # /_/ |_| \____//_/ /_/\__,_/ /_/ /_/\____/
 # -----------
-#
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +28,7 @@
 from typing import List  # noqa: F401
 
 
-from libqtile import qtile, layout, widget, hook
+from libqtile import qtile, layout, widget, hook, extension
 from libqtile.config import Click, Drag, Group, Key, KeyChord, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.popup import Popup
@@ -250,12 +240,6 @@ def layout_keys():
             desc="Expand window (MonadTall), increase number in master pane (Tile)",
         ),
         Key(
-            [mod],
-            "m",
-            lazy.layout.grow(),
-            desc="toggle window between minimum and maximum sizes",
-        ),
-        Key(
             [mod, "shift"],
             "t",
             lazy.window.toggle_floating(),
@@ -330,6 +314,12 @@ def spawn_keys():
             [mod, "shift"],
             "s",
             lazy.spawn("flameshot gui"),
+            desc="Screenshot utility",
+        ),
+        Key(
+            [mod, "shift"],
+            "o",
+            lazy.spawn("/home/rohanj/.config/scripts/ocr.sh"),
             desc="Screenshot utility",
         ),
         Key(
@@ -642,7 +632,7 @@ floating_layout = layout.Floating(
         # to see the wm class and name of an X client.
         *layout.Floating.default_float_rules,
         Match(wm_class="gnome-calendar"),  # Calendar app
-        Match(wm_class="gnome-calculator"),  # Calculator app
+        Match(wm_class="galculator"),  # Calculator app
         Match(wm_class="confirmreset"),  # gitk
         Match(wm_class="makebranch"),  # gitk
         Match(wm_class="maketag"),  # gitk

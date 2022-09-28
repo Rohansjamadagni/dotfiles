@@ -2,7 +2,7 @@ export LC_ALL="en_US.UTF-8"
 export PATH=$HOME/.local/bin:$PATH
 export PATH="$HOME/.npm-global/bin:$PATH"  # ← put this line in .bashrc
 export PATH="/home/rohanj/.cargo/bin:$PATH"  # ← put this line in .bashrc
-export PATH="/home/rohanj/.scripts/:$PATH"  # ← put this line in .bashrc
+export PATH="/home/rohanj/.config/scripts/:$PATH"  # ← put this line in .bashrc
 # Dependancies You Need for this Config
 # zsh-syntax-highlighting - syntax highlighting for ZSH in standard repos
 # autojump - jump to directories with j or jc for child or jo to open in file manager
@@ -192,7 +192,7 @@ figlet -f Speed SugoN | lolcat
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 #prompt spaceship
 eval "$(starship init zsh)"
-
+echo '\e[5 q'
 # !! Contents within this block are managed by 'conda init' !!
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
