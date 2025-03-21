@@ -1,0 +1,61 @@
+# -----------------------------------------------------
+# CUSTOMIZATION
+# -----------------------------------------------------
+
+# -----------------------------------------------------
+# oh-myzsh themes: https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# -----------------------------------------------------
+# ZSH_THEME=robbyrussell
+
+# -----------------------------------------------------
+# Set-up FZF key bindings (CTRL R for fuzzy history finder)
+# -----------------------------------------------------
+source <(fzf --zsh)
+
+# zsh history
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt appendhistory
+setopt menucomplete
+setopt inc_append_history
+setopt histignorealldups
+setopt share_history
+setopt autolist
+
+
+autoload -Uz +X compinit promptinit
+promptinit
+compinit
+autoload -Uz bashcompinit
+bashcompinit
+
+
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^[[H" beginning-of-line
+bindkey "^[[F" end-of-line
+bindkey "^[[3~" delete-char
+bindkey '^I' complete-word
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select
+eval "$(dircolors)"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+bindkey -e
+
+
+# -----------------------------------------------------
+# Starship promt
+# -----------------------------------------------------
+eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/zen.toml)"
+
+# plugins
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /home/rohanj/.zsh/fzf-dir-navigator/fzf-dir-navigator.zsh
+bindkey '^ ' autosuggest-accept
+
+figlet -f Speed 'Sugon' | lolcat
+fastfetch --config examples/13
